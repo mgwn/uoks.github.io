@@ -84,9 +84,8 @@ jsonContent:
 
 ## Themes: http://hexo.io/themes/
 theme: yilia
+## Add by uoks
+default_comments: true
 
 # Deployment
 ## Docs: http://hexo.io/docs/deployment.html
-deploy:
-- type: git
-  repo: https://github.com/uoks/uoks.github.io.git
