@@ -1,7 +1,9 @@
+---
 title: 使用Physicals代替Box2D和chipmunk
-date: 2014/10/1 13:00:00
-tags: 
-- cocos2d-x
+date: '2014/10/1 13:00:00'
+tags:
+  - cocos2d-x
+abbrlink: 514f85d3
 ---
 
 ## 1.概述
@@ -27,23 +29,23 @@ tags:
     }
 更改create，创建一个支持物理的世界，打开debugDraw。两行就可以搞定了。
 
-接下来，我们要将这个World传到Layer中。所以我们在HelloWorld类中加入一个函数。将这个world存起来。 
+接下来，我们要将这个World传到Layer中。所以我们在HelloWorld类中加入一个函数。将这个world存起来。
 
 	//...
 		void setPhyWorld(PhysicsWorld* world){m_world=world;}
 	private:
 		PythicsWorld* m_world
 	//...
-	
+
 同时在creatScene创建layer完成后，将这个值设定上。
-	
+
 	//...
 		auto layer = HellowWorld::create();
 		layere->setPhyWorld(scene->getPhysicsWorld());
 	//...
-	
+
 ## 4.创建边界
-接下来，我们着手创建一个边界。我们可以方便的使用PhysicalsBody的create方法创建自己想要的物体。 
+接下来，我们着手创建一个边界。我们可以方便的使用PhysicalsBody的create方法创建自己想要的物体。
 
 	bool helloWorld::init()
 	{
@@ -55,14 +57,14 @@ tags:
 		this->addChild(edgeSp);  
 		edgeSp->setTag(0);  	
 		//...
-		return true;	
+		return true;
 	}
 
 ## 5.添加元素
-关联body与sprite从未如此简单，我们只需创建一个body，创建一个sprite然后将body设置为sprite的body即可。 
+关联body与sprite从未如此简单，我们只需创建一个body，创建一个sprite然后将body设置为sprite的body即可。
 
 	auto body = PhysicsBody::createBox(Size(80, 40));  
-	sp->setPhysicsBody(body); 
+	sp->setPhysicsBody(body);
 
 ### 3.0版bug
  在这其中，当前版本的cocos2d-x 3.0有一个小问题。关联的时候，并未将body相应的owner设置为对应的sprite，我们需要修改sprite.cpp中的`setPhysicsBody`这个函数。增加最后一行。
@@ -78,40 +80,39 @@ tags:
 ## 6.碰撞检测
 碰撞检测的回调是在world中注册函数来实现的。首先我们在HelloWorld中声明一个变量。并重写OnEnter方法。  
 声明
-  
+
 	PhysicsContactListener m_listener;  
 实现
 
 	void HelloWorld::onEnter()
 	{
-		Layer::onEnter(); 
-		
+		Layer::onEnter();
+
 		m_listener.onContactBegin = [=](const PhysicsContact& contact)  
 		{
 			auto cnt = const_cast<PhysicsContact*>(&contact);  
-			
+
 			auto sp = cnt->getShapeA()->getBody()->getOwner();  
 			int tag = sp->getTag();
 			if(tag == 1)
 			{
 				//...
-			} 
-			
-			sp = cnt->getShapeB()->getBody()->getOwner(); 
-			tag = sp->getTag(); 
+			}
+
+			sp = cnt->getShapeB()->getBody()->getOwner();
+			tag = sp->getTag();
 			if(tag == 1)
 			{
 				//...
-			} 
+			}
 			//...
 			return true;
 		};
-		
+
 		m_world->registerContactListener(&m_listener);
 	}
-	
+
 其中，我们将listener的onContactBegin方法重写。并通过`shape->body->owner`的方式来取到sprite。更改它的显示。最后将listener注册到m_world中。
 
 ## 7.总结
 通过创建一个支持Physicals的场景，来创建物理系统。将body创建出来，并调用sprite的`setPhysicsBody`来为一个sprite设定body。通过`PhysicsContactListener`来创建一个Listener并通过`registerContactListener`将其注册，来处理碰撞。
-	

@@ -15,7 +15,7 @@ timezone:
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
 url: https://uoks.github.io
 root: /
-permalink: :year/:month/:day/:title/
+permalink: posts/:abbrlink/
 permalink_defaults:
 
 # Directory
@@ -63,6 +63,7 @@ pagination_dir: page
 
 # Extensions
 ## Plugins: http://hexo.io/plugins/
+#jsonContent config
 jsonContent:
   meta: false
   pages: false
@@ -81,7 +82,10 @@ jsonContent:
     excerpt: false
     categories: false
     tags: true
-
+# abbrlink config
+abbrlink:
+  alg: crc32  #support crc16(default) and crc32
+  rep: hex    #support dec(default) and hex
 ## Themes: http://hexo.io/themes/
 theme: yilia
 ## Add by uoks

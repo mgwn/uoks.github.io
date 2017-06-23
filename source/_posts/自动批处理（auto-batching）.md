@@ -1,12 +1,14 @@
+---
 title: 自动批处理（Auto-batching）
-date: 2014/10/1 12:00:00
-tags: 
-- cocos2d-x
+date: '2014/10/1 12:00:00'
+tags:
+  - cocos2d-x
+abbrlink: 6fecc665
 ---
 
 ## 简介
 为了优化和提升绘制多精灵渲染效率，Cocos2d-x提高了`Auto-batching`和`SpriteBatchNode`
-  
+
 * `Auto-batching`意思是Renderer将多次draw的调用打包成一次big Draw调用  
 * `SpriteBacthNode`主要用来批量绘制精灵提高精灵的绘制效率，数量越多效果越明显
 
@@ -31,32 +33,32 @@ tags:
 
 	// check Sprite is using the same texture id
 	CCASSERT(sprite->getTexture()->getName() == _textureAtlas->getTexture()->getName(), "CCSprite is not using the same texture id");
-   
+
 `SpriteBatchNode`使用代码示例
 
 	auto batch = SpriteBatchNode::create("Images/grossini_dance_atlas.png", 1);
-	addChild(batch, 0, kTagSpriteBatchNode);        
+	addChild(batch, 0, kTagSpriteBatchNode);       
 	auto sprite1 = Sprite::createWithTexture(batch->getTexture(), Rect(85*0, 121*1, 85, 121));
 	auto sprite2 = Sprite::createWithTexture(batch->getTexture(), Rect(85*1, 121*1, 85, 121));
-	
+
 	auto s = Director::getInstance()->getWinSize();
 	sprite1->setPosition( Point( (s.width/5)*1, (s.height/3)*1) );
 	sprite2->setPosition( Point( (s.width/5)*2, (s.height/3)*1) );
-	
+
 	batch->addChild(sprite1, 0, kTagSprite1);
 	batch->addChild(sprite2, 0, kTagSprite2);
-	
+
 `SpriteBatchNode`和`SpriteFrameCache`结合使用代码示例  
 必须保证SpriteFrameCache和SpriteBatchNode加载的是同一纹理贴图。
 
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("animations/ghosts.plist", "animations/ghosts.png");
 	SpriteBatchNode *batch = SpriteBatchNode::batchNodeWithFile("animations/ghosts.png");
 	addChild(batch, 0, kTagSprite1);
-	
+
 	Sprite *pFather = Sprite::spriteWithSpriteFrameName("father.gif");
 	pFather->setPosition(p( s.width/2, s.height/2));
 	batch->addChild(pFather, 0, kTagSprite2);
-	
+
 ## SpriteBatchNode vs. Auto-batching
 在3.0版本中提供了新的渲染机制，实现引擎逻辑代码和渲染的分离。该版本依然支持SpriteBatchNode，和以前的版本保持一致。但是`不再推荐`使用SpriteBatchNode。
 
@@ -82,12 +84,12 @@ Auto-batching拥有更好的性能提升。
     	sprite->setPosition(Point(CCRANDOM_0_1() * winSize.width, 0 + CCRANDOM_0_1() * winSize.height));
     	this->addChild(sprite);
 	}
-	
+
 ### 2. 使用精灵帧表单（推荐）
 使用精灵帧表单，加载生成添加不同的精灵。但是各个精灵的材质都是一样的，满足Auto-batching的条件。此时的渲染批次为2.(首先，即使我一个精灵也不创建，渲染批次也至少是1,加上刚刚这重复添加的精灵的渲染)
 
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("MatrixLayer.plist");
- 
+
 	Size winSize = Director::getInstance()->getWinSize();
 	for(int i = 0; i < 10000; i++)
 	{
@@ -107,10 +109,10 @@ Auto-batching拥有更好的性能提升。
     	Sprite* sprite1 = Sprite::create("CloseNormal.png");
     	sprite1->setPosition(Point(CCRANDOM_0_1() * winSize.width, 0 + CCRANDOM_0_1() * winSize.height));
     	this->addChild(sprite1);
- 
+
 	    Sprite* sprite2 = Sprite::create("CloseSelected.png");
     	sprite2->setPosition(Point(CCRANDOM_0_1() * winSize.width, 0 + CCRANDOM_0_1() * winSize.height));
     	this->addChild(sprite2);
     	sprite2->setZOrder(1);
- 
+
 	}

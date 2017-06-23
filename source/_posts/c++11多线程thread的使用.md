@@ -1,7 +1,9 @@
-title: C++11多线程std::thread的使用
-date: 2014/10/2 14:00:00
-tags: 
-- c++
+---
+title: 'C++11多线程std::thread的使用'
+date: '2014/10/2 14:00:00'
+tags:
+  - c++
+abbrlink: 52fca7b5
 ---
 
 cocos2d-x 3.0移除了`pthread`的支持，使用c++11的`std::thread`下面介绍以下简单用法  
@@ -13,12 +15,12 @@ cocos2d-x 3.0移除了`pthread`的支持，使用c++11的`std::thread`下面介�
 	...
 	std::thread t1(&HelloWold::myThread,this,1,2)；//创建一个分支线程，回调到myThread函数里
 	...
-	
+
 	void HelloWorld::myThread(int a,int b)
 	{
 	}
-	
-	
+
+
 ## join()
 
 	t1.join();
@@ -35,7 +37,7 @@ cocos2d-x 3.0移除了`pthread`的支持，使用c++11的`std::thread`下面介�
 ## 利用互斥对象mutex同步数据
 ### 初始化  
 
-	std::mutext mutex;//线程互斥对象	
+	std::mutext mutex;//线程互斥对象
 
 ### 使用
 
