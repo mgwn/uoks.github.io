@@ -12,6 +12,7 @@ abbrlink: 6fecc665
 * `Auto-batching`意思是Renderer将多次draw的调用打包成一次big Draw调用  
 * `SpriteBacthNode`主要用来批量绘制精灵提高精灵的绘制效率，数量越多效果越明显
 
+<!-- more -->
 ## Auto-batching
 在3.0版本实现了引擎的逻辑代码与渲染代码的分离，实现了`Auto Batch`与`Auto Culling`功能。不再推荐使用`SpriteBatchNode`提高精灵的绘制效率。  
 `Auto-culling`的支持，Sprite在绘制时会进行检查，超出屏幕的不会发给渲染。

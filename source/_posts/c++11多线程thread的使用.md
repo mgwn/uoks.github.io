@@ -8,6 +8,7 @@ abbrlink: 52fca7b5
 
 cocos2d-x 3.0移除了`pthread`的支持，使用c++11的`std::thread`下面介绍以下简单用法  
 
+<!-- more -->
 代码需包含头文件`<thread>`
 
 ## 创建
